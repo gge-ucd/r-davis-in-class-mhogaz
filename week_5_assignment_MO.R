@@ -58,8 +58,9 @@ surveys_avg_weight <-  surveys_avg_weight %>%
 
 #extra challenge: add col that has scaled weight by spp. Sort and look at relative biggest and smallest indiviuals
 
-surveys <- surveys %>% 
-  mutate_at(scale, .vars = vars(weight, species)) 
-#not done with the above, doesn't work yet  
+surveys_Xtra_Challenge <- surveys %>% 
+ group_by(species) %>% 
+  mutate(scaled_wt = scale(weight, scale = F)) %>% 
+  arrange(desc(scaled_wt))
 
          
