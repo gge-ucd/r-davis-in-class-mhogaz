@@ -45,3 +45,5 @@ ggplot(gapminder, aes(x = gdpPercap, y = lifeExp)) +
   scale_x_log10() +
   geom_smooth(method = 'lm', color = 'black', linetype = 'dashed') +
   theme_bw()  
+
+ggsave("figs/w6_assignment_MO.jpeg", height = 8, width = 8)
