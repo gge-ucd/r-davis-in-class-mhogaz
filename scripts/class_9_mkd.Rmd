@@ -1,0 +1,63 @@
+---
+title: "Week 9"
+output:
+  html_document: default
+---
+
+This is an R Markdown document. I can type whatever I want.
+
+**This is bold**
+*This is italic*
+
+### This will make the font bigger
+ 
+## This will make the font even bigger
+
+echo= false means it won't show the code chunk, just the output 
+
+suppressPackageStartupMessages can be used to wrap around the loading of the tidyverse package so all of those messages don't appear, for just that line
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+glimpse(storms)
+
+library(viridis)
+
+ggplot(storms) +
+  geom_jitter(aes(as.factor(month), pressure, fill = wind), pch = 21, alpha = 0.05) +
+  scale_fill_viridis_c() +
+  theme_bw() +
+  labs(title = "Hurricane Pressure v Month", subtitle = "with Max Wind Speed", x = "Month")
+
+```
+ 
+ writing out equations in Rmarkdown
+ 
+ If you want to write an equation, you put a dollar sign on either side of it
+ 
+ $\sum_{i=y}^n X_i$
+ 
+```{r}
+library(knitr)
+
+kable(head(storms), caption = "Table using Kable")
+
+htmlTable::htmlTable(head(storms))
+
+#make an interactive table
+ DT::datatable(storms)
+```
+ 
+```{r}
+library(plotly)
+
+
+ggplotly(
+  ggplot(storms) +
+  geom_jitter(aes(as.factor(month), pressure, fill = wind), pch = 21, alpha = 0.05) +
+  scale_fill_viridis_c() +
+  theme_bw() +
+  labs(title = "Hurricane Pressure v Month", subtitle = "with Max Wind Speed", x = "Month"))
+
+```
+ 
+ 
