@@ -1,0 +1,65 @@
+---
+title: "week9_assignment_MO"
+output: html_document
+---
+
+
+
+**What environmental signals prompt native fish to leave the floodplain before disconnection with the river and avoid stranding?**
+
+The goal of my current research is to help understand and conserve native salmon (*Oncorhynchus tshawytscha*) populations by better understanding fish utilization of natural, restored, or managed floodplains under varying environmental conditions. The lower Cosumnes River is an ideal place to research these dynamics, as it has no major dams, so the flow is relatively natural, and there is a restored floodplain that can be used to understand timing and use by juvenile salmon and other native
+fishes. Information from my research will inform managers and help prioritize restoration efforts
+throughout the Central Valley.
+
+
+![](C:/Users/mhoga/Desktop/R-DAVIS-Class/r-davis-in-class-mhogaz/figs/IMG_3078.JPG)
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(plotly)
+glimpse(storms)
+
+library(viridis)
+
+ggplot(storms) +
+  geom_jitter(aes(wind, pressure, color = status)) +
+  scale_color_viridis_d() +
+  labs(title = "Storm Pressure v Wind", subtitle = "By Status") +
+  theme_bw()
+
+```
+
+Create a table that identifies the mean wind, pressure, ts_diameter, hu_diameter of each status of storm.
+
+```{r, message=FALSE, warning=FALSE}
+library(htmlTable)
+
+storms_tbl <- storms %>% 
+  drop_na(ts_diameter, hu_diameter) %>% 
+  group_by(status) %>% 
+  summarize(mean_wind = mean(wind), mean_pressure = mean(pressure), mean_ts = mean(ts_diameter), mean_hu = mean(hu_diameter))
+
+storms_tbl$mean_wind <- round(storms_tbl$mean_wind, 2)
+storms_tbl$mean_pressure <- round(storms_tbl$mean_pressure, 2)
+storms_tbl$mean_ts <- round(storms_tbl$mean_ts, 2)
+storms_tbl$mean_hu <- round(storms_tbl$mean_hu, 2)
+
+htmlTable(storms_tbl)
+```
+
+CHALLENGE
+
+```{r, warning=FALSE, message=FALSE}
+glimpse(storms)
+
+duration <- storms %>% 
+  filter( year >= 2010, status == "hurricane") %>% 
+  group_by(name, year) %>% 
+  summarize(duration = diff(range(day)))
+
+#map
+
+map2_chr(duration$name, duration$duration, function(x,y) paste("Hurricane", x, "lasted", y, "days"))
+```
+
+
